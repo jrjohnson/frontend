@@ -90,6 +90,14 @@ module.exports = function(environment) {
         'api-name-space': 'api/v1'
       }
     },
+    manifest: {
+      enabled: true,
+      appcacheFile: "/manifest.appcache",
+      excludePaths: ['index.html'],
+      includePaths: ['/'],
+      network: ['/api', '/application'],
+      showCreateDate: true
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
