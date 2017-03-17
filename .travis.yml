@@ -5,9 +5,6 @@ node_js:
 
 sudo: false
 
-addons:
-  firefox: "latest-esr"
-
 env:
   global:
     #AWS credentials for ilios travis-deploy user
@@ -60,7 +57,7 @@ script:
   - if [ "$LINT" = true ];
     then eslint .;
     fi
-  - ember exam --split=$SPLIT --partition=$PARTITION --launch=firefox --filter=$FILTER --parallel=$PARALLEL
+  - ember exam --split=$SPLIT --partition=$PARTITION --filter=$FILTER --parallel=$PARALLEL
 
 after_success:
   - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && node_modules/.bin/ember deploy production
