@@ -7,23 +7,24 @@ cache:
   yarn: true
   directories:
     - node_modules
+    - bower_components
     - $HOME/.cache/bower
-
-before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH=$HOME/.yarn/bin:$PATH
-  - yarn global add bower
-  - yarn global add greenkeeper-lockfile@1
-
-install:
-  - yarn
-  - bower install
 
 script: ember exam --split=$SPLIT --partition=$PARTITION --filter=$FILTER --parallel=$PARALLEL
 
 jobs:
   include:
     - stage: prepare
+      before_install:
+        - rm -rf node_modules
+        - rm -rf bower_components
+        - curl -o- -L https://yarnpkg.com/install.sh | bash
+        - export PATH=$HOME/.yarn/bin:$PATH
+        - yarn global add bower
+        - yarn global add greenkeeper-lockfile@1
+      install:
+        - yarn
+        - bower install
       before_script: greenkeeper-lockfile-update
       after_script: greenkeeper-lockfile-upload
       script: true
@@ -45,3 +46,7 @@ jobs:
       notifications:
         slack:
           secure: oloxDKdwXmNHKhh5WSR8DDxA3WJdAnyj+vj/8yawF1zG0tgL4fyPzzFqSpEhfsfgBrJlvxFtSnnsWEIMSMdT1LTwReClyjsy3PFQnHIiLMv/IZUS7ijahXQ4XL+ejfyPV4rJtFuKOLuNMww8uniy705/QkqBYwFUAcXXQ3gV5V8=
+    - stage: cleanup
+      after_script:
+        - rm -rf node_modules
+        - rm -rf bower_components
