@@ -1,5 +1,5 @@
 <h2 class='title'>
-  {{t 'general.manageUsersSummaryTitle'}} ({{#link-to 'users' (query-params showBulkNewUserForm=false showNewUserForm=false)}}{{t 'general.viewAll'}}{{/link-to}})
+  {{t 'general.manageUsersSummaryTitle'}} ({{#link-to 'users' (query-params showBulkNewUserForm=false showNewUserForm=false) data-test-users-link}}{{t 'general.viewAll'}}{{/link-to}})
 </h2>
 <div class='actions'>
   {{#link-to 'users' (query-params showNewUserForm=true showBulkNewUserForm=false)}}
@@ -11,7 +11,7 @@
     {{/link-to}}
   {{/if}}
 </div>
-<div class='user-search'>
+<div class='user-search' data-test-user-search>
   {{one-way-search
     value=searchValue
     update=(action (mut searchValue))
@@ -20,7 +20,7 @@
     onsearch=(perform searchForUsers value="target.value")
     onkeyup=(perform searchForUsers value="target.value")
   }}
-  <ul class="results {{unless (or searchForUsers.isRunning searchForUsers.lastSuccessful.value.length) 'hidden'}}">
+  <ul class="results {{unless (or searchForUsers.isRunning searchForUsers.lastSuccessful.value.length) 'hidden'}}" data-test-user-search-results>
     {{#if searchForUsers.isRunning}}
       <li>{{t 'general.currentlySearchingPrompt'}}</li>
     {{else}}
@@ -33,13 +33,13 @@
         {{/if}}
         {{#if (eq result.type 'user')}}
           <li class='user clickable' {{action (perform clickUser) result.user}}>
-            <span class='name'>
+            <span class='name' data-test-user-search-result-name>
               {{result.user.fullName}}
               {{#unless result.user.enabled}}
                 {{fa-icon 'user-times' title=(t 'general.disabled') class='error'}}
               {{/unless}}
             </span>
-            <span class='email'>{{result.user.email}}</span>
+            <span class='email' data-test-user-search-result-email>{{result.user.email}}</span>
           </li>
         {{/if}}
 
