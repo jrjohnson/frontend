@@ -1,13 +1,13 @@
 {{#link-to 'admin-dashboard'}}{{t 'general.backToAdminDashboard'}}{{/link-to}}
-<section class='fullwidth main-border assign-students'>
+<section class='fullwidth main-border assign-students' data-test-assign-students>
   <div class="filter-tools">
-    <div id='schoolsfilter' class="filter">
+    <div class="filter">
       <label class="inline-label">
         {{fa-icon 'university'}}
       </label>
-      <div id="school-selection" class="inline-data">
+      <div class="inline-data" data-test-selected-school>
         {{#if hasMoreThanOneSchool}}
-          <select onchange={{action "changeSelectedSchool" value="target.value"}}>
+          <select onchange={{action "changeSelectedSchool" value="target.value"}}  data-test-school-filter>
             {{#each (sort-by 'title' model.schools) as |school|}}
               <option value={{school.id}} selected={{is-equal school selectedSchool}}>
                 {{school.title}}
@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div id='titlefilter' class="filter">
+    <div class="filter">
       {{one-way-input filter placeholder=(t 'general.pendingUserUpdates.filterBy') update=(action (mut filter))}}
     </div>
   </div>
