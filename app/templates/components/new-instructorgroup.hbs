@@ -1,10 +1,11 @@
-<section class='newinstructorgroup new-instructor-group new-result form-container'>
+<section class='newinstructorgroup new-instructor-group new-result form-container' data-test-new-group>
   <div class="new-result-title">{{t 'general.newInstructorGroup'}}</div>
   <div class="detail-content">
     <div class="form-col-12">
       <label class="form-label">{{t 'general.title'}}</label>
       <div class="form-data newinstructorgroup-title">
         {{one-way-input
+          data-test-title
           value=title
           update=(action (mut title))
           onenter=(action 'save')

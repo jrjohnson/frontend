@@ -1,9 +1,9 @@
-<section class='instructorgroups-list'>
+<section class='instructorgroups-list' data-test-instructor-groups>
   <div class="filters">
     <div class="schoolsfilter">
       {{fa-icon 'university' fixedWidth=true}}
       {{#if hasMoreThanOneSchool}}
-        <select onchange={{action "changeSelectedSchool" value="target.value"}}>
+        <select onchange={{action "changeSelectedSchool" value="target.value"}} data-test-school-filter>
           {{#each (sort-by 'title' model.schools) as |school|}}
             <option value={{school.id}} selected={{is-equal school selectedSchool}}>
               {{school.title}}
@@ -16,6 +16,7 @@
     </div>
     <div class="titlefilter">
       {{one-way-input
+        data-test-title-filter
         value=titleFilter
         update=(perform changeTitleFilter)
         placeholder=(t 'general.instructorGroupTitleFilterPlaceholder')
@@ -28,10 +29,10 @@
         <h2>{{t 'general.instructorGroups'}}</h2>
       </div>
       <div class='actions'>
-        {{expand-collapse-button value=showNewInstructorGroupForm action="toggleNewInstructorGroupForm"}}
+        {{expand-collapse-button data-test-toggle-new-group-form value=showNewInstructorGroupForm action="toggleNewInstructorGroupForm"}}
       </div>
     </div>
-    <section class='new'>
+    <section class='new' data-test-new-group>
       {{#if showNewInstructorGroupForm class='vertical'}}
         {{new-instructorgroup
           currentSchool=selectedSchool

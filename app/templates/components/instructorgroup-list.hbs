@@ -1,4 +1,4 @@
-<table>
+<table data-test-instructor-group-list>
   <thead>
     <tr>
       <th class='text-left' colspan=2>{{t 'general.instructorGroupTitle'}}</th>
@@ -8,7 +8,7 @@
       <th>&nbsp;</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody data-test-groups>
     {{#each proxiedInstructorGroups as |instructorGroup|}}
       <tr class="{{if instructorGroup.showRemoveConfirmation 'confirm-removal'}}">
         <td class='text-left' colspan=2>
