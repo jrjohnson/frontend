@@ -14,6 +14,9 @@ if (isCI || isProductionLikeBuild) {
   browsers.push('firefox esr'); //actually points to the last 2 ESR releases as they overlap
   browsers.push('last 1 ios versions');
 }
+console.log('Is CI:', isCI);
+console.log('isProductionLikeBuild:', isProductionLikeBuild);
+console.log('Building for:', browsers);
 
 module.exports = {
   browsers
