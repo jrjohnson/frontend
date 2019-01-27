@@ -3,12 +3,11 @@ import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import RSVP from 'rsvp';
+import { next } from '@ember/runloop';
+import { Promise, all } from 'rsvp';
 import { validator, buildValidations } from 'ember-cp-validations';
 import ValidationErrorDisplay from 'ilios-common/mixins/validation-error-display';
 import { task, timeout } from 'ember-concurrency';
-
-const { Promise, all } = RSVP;
 
 const Validations = buildValidations({
   firstName: [
@@ -137,10 +136,11 @@ export default Component.extend(ValidationErrorDisplay, Validations, {
       this.set('password', '');
     }
 
+    next(() => {
+      this.setIsManaging(true);
+    });
+
     yield import('zxcvbn');
-
-    this.get('setIsManaging')(true);
-
     return true;
   }),
 
