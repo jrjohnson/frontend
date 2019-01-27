@@ -13,10 +13,6 @@ let school;
 module('Integration | Component | user profile bio', function(hooks) {
   setupRenderingTest(hooks);
 
-  hooks.before(async function () {
-    await import('zxcvbn');
-  });
-
   hooks.beforeEach(function() {
     authentication = EmberObject.create({
       username: 'test-username',

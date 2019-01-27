@@ -137,6 +137,8 @@ export default Component.extend(ValidationErrorDisplay, Validations, {
       this.set('password', '');
     }
 
+    yield import('zxcvbn');
+
     this.get('setIsManaging')(true);
 
     return true;

@@ -32,11 +32,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
     this.set('canUpdate', canUpdate);
     this.set('canCreate', canCreate);
-
-    const userSearchType = await this.iliosConfig.userSearchType;
-    if (userSearchType !== 'ldap' && (canCreate || canUpdate)) {
-      await import('zxcvbn');
-    }
   },
   setupController(controller, model) {
     this._super(controller, model);
