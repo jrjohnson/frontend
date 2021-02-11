@@ -8,7 +8,6 @@ if (existsSync(dotEnvPath)) {
 }
 
 module.exports = function (environment) {
-
   const ENV = {
     modulePrefix: 'ilios',
     environment,
@@ -84,6 +83,7 @@ module.exports = function (environment) {
         String: true,
         Array: true,
         Function: false,
+        // Prevent Ember Data from overriding Date.parse.
         Date: false,
       }
     },
