@@ -21,7 +21,9 @@ export default class MyProfileComponent extends Component {
 
   get apiDocsLink() {
     const apiPath = '/' + this.iliosConfig.apiNameSpace;
-    const host = this.iliosConfig.host ? this.iliosConfig.host : window.location.protocol + '//' + window.location.host;
+    const host = this.iliosConfig.host
+      ? this.iliosConfig.host
+      : window.location.protocol + '//' + window.location.host;
     const docPath = host + apiPath.replace('v3', 'doc');
     return `<a href="${docPath}">${docPath}</a>`;
   }
@@ -81,7 +83,7 @@ export default class MyProfileComponent extends Component {
       const flashMessages = this.flashMessages;
       const session = this.session;
       const authenticator = 'authenticator:ilios-jwt';
-      session.authenticate(authenticator, {jwt: data.jwt});
+      session.authenticate(authenticator, { jwt: data.jwt });
       flashMessages.success('general.successfullyInvalidatedTokens');
       this.args.toggleShowInvalidateTokens();
     }

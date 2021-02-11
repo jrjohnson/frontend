@@ -4,27 +4,27 @@ import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import moment from 'moment';
 
-module('Integration | Component | recently updated display', function(hooks) {
+module('Integration | Component | recently updated display', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     const lastModified = moment().subtract(5, 'day');
 
     this.set('lastModified', lastModified);
     await render(hbs`<RecentlyUpdatedDisplay @lastModified={{lastModified}} />`);
 
-    return settled().then(()=>{
+    return settled().then(() => {
       assert.dom('.fa-exclamation-circle').exists({ count: 1 }, 'it renders');
     });
   });
 
-  test('it does not render', async function(assert) {
+  test('it does not render', async function (assert) {
     const lastModified = moment().subtract(9, 'day');
 
     this.set('lastModified', lastModified);
     await render(hbs`<RecentlyUpdatedDisplay />`);
 
-    return settled().then(()=>{
+    return settled().then(() => {
       assert.dom('.fa-exclamation-circle').doesNotExist('it does not renders');
     });
   });

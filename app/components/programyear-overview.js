@@ -2,10 +2,12 @@ import Component from '@ember/component';
 import { filterBy, sort } from '@ember/object/computed';
 import config from '../config/environment';
 
-const { IliosFeatures: { programYearVisualizations } } = config;
+const {
+  IliosFeatures: { programYearVisualizations },
+} = config;
 
 export default Component.extend({
-  tagName: "",
+  tagName: '',
 
   canUpdate: false,
   directorsSort: null,
@@ -23,7 +25,7 @@ export default Component.extend({
   actions: {
     addDirector(user) {
       const programYear = this.programYear;
-      programYear.get('directors').then(directors => {
+      programYear.get('directors').then((directors) => {
         directors.addObject(user);
         user.get('programYears').addObject(programYear);
         programYear.save();
@@ -32,11 +34,11 @@ export default Component.extend({
 
     removeDirector(user) {
       const programYear = this.programYear;
-      programYear.get('directors').then(directors => {
+      programYear.get('directors').then((directors) => {
         directors.removeObject(user);
         user.get('programYears').removeObject(programYear);
         programYear.save();
       });
-    }
-  }
+    },
+  },
 });

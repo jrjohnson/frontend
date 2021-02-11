@@ -4,14 +4,17 @@ import { render, find, findAll, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { setupIntl } from 'ember-intl/test-support';
 
-module('Integration | Component | new programyear', function(hooks) {
+module('Integration | Component | new programyear', function (hooks) {
   setupRenderingTest(hooks);
   setupIntl(hooks);
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     assert.expect(8);
     this.set('nothing', parseInt);
-    this.set('years', [{ label: '2018-2019', value: 2018}, {label: '2019-2020', value: 2019}]);
+    this.set('years', [
+      { label: '2018-2019', value: 2018 },
+      { label: '2019-2020', value: 2019 },
+    ]);
     await render(hbs`<NewProgramyear
       @save={{action nothing}}
       @cancel={{action nothing}}
@@ -32,13 +35,16 @@ module('Integration | Component | new programyear', function(hooks) {
     assert.ok(cancelBtn);
   });
 
-  test('cancel', async function(assert) {
+  test('cancel', async function (assert) {
     assert.expect(1);
     this.set('cancel', () => {
       assert.ok(true, 'cancel action fired.');
     });
     this.set('save', () => {});
-    this.set('years', [{ label: '2018-2019', value: 2018}, {label: '2019-2020', value: 2019}]);
+    this.set('years', [
+      { label: '2018-2019', value: 2018 },
+      { label: '2019-2020', value: 2019 },
+    ]);
     await render(hbs`<NewProgramyear
       @save={{action save}}
       @cancel={{action cancel}}
@@ -48,13 +54,16 @@ module('Integration | Component | new programyear', function(hooks) {
     await click(cancelBtn);
   });
 
-  test('save', async function(assert) {
+  test('save', async function (assert) {
     assert.expect(1);
     this.set('save', async (startYear) => {
       assert.equal(startYear, '2018');
     });
     this.set('cancel', () => {});
-    this.set('years', [{ label: '2018-2019', value: 2018}, {label: '2019-2020', value: 2019}]);
+    this.set('years', [
+      { label: '2018-2019', value: 2018 },
+      { label: '2019-2020', value: 2019 },
+    ]);
     await render(hbs`<NewProgramyear
       @save={{action save}}
       @cancel={{action cancel}}

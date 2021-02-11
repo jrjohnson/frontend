@@ -2,33 +2,33 @@ import { setupTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 import 'ember-qunit';
 
-module('Unit | Component | programyear list', function(hooks) {
+module('Unit | Component | programyear list', function (hooks) {
   setupTest(hooks);
 
-  test('properties have default values', function(assert) {
+  test('properties have default values', function (assert) {
     assert.expect(1);
 
     const expected = {
-      program:      null,
+      program: null,
       programYears: [],
-      editorOn:     false,
-      selection:    null
+      editorOn: false,
+      selection: null,
     };
 
     const Factory = this.owner.factoryFor('component:programyear-list');
     const component = Factory.create();
 
     const actual = {
-      program:      component.get('program'),
+      program: component.get('program'),
       programYears: component.get('programYears'),
-      editorOn:     component.get('editorOn'),
-      selection:    component.get('selection'),
+      editorOn: component.get('editorOn'),
+      selection: component.get('selection'),
     };
 
     assert.deepEqual(actual.program, expected.program, 'default values are correct');
   });
 
-  test('`availableAcademicYears` computed property works properly', function(assert) {
+  test('`availableAcademicYears` computed property works properly', function (assert) {
     assert.expect(1);
 
     const currentYear = new Date().getFullYear();
@@ -36,11 +36,16 @@ module('Unit | Component | programyear list', function(hooks) {
     const twoYearsFromNow = nextYear + 1;
     const threeYearsFromNow = twoYearsFromNow + 1;
 
-    const programYears = [{
-      academicYears: `${nextYear} - ${twoYearsFromNow}`, startYear: `${nextYear}`
-    }, {
-      academicYears: `${twoYearsFromNow} - ${threeYearsFromNow}`, startYear: `${twoYearsFromNow}`
-    }];
+    const programYears = [
+      {
+        academicYears: `${nextYear} - ${twoYearsFromNow}`,
+        startYear: `${nextYear}`,
+      },
+      {
+        academicYears: `${twoYearsFromNow} - ${threeYearsFromNow}`,
+        startYear: `${twoYearsFromNow}`,
+      },
+    ];
 
     for (let i = 0; i < 10; i++) {
       if (i !== 5) {
@@ -58,7 +63,7 @@ module('Unit | Component | programyear list', function(hooks) {
 
     const Factory = this.owner.factoryFor('component:programyear-list');
     const component = Factory.create({
-      programYears
+      programYears,
     });
 
     const actual = component.get('availableAcademicYears');

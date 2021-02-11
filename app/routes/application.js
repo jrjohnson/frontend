@@ -40,10 +40,7 @@ export default Route.extend(ApplicationRouteMixin, {
     const currentUser = this.currentUser;
     const user = await currentUser.get('model');
     if (user) {
-      await all([
-        user.get('roles'),
-        this.store.findAll('school')
-      ]);
+      await all([user.get('roles'), this.store.findAll('school')]);
     }
   },
 
@@ -70,7 +67,7 @@ export default Route.extend(ApplicationRouteMixin, {
     });
     const { currentUserId } = this.currentUser;
     if (currentUserId) {
-      Sentry.setUser({id: currentUserId});
+      Sentry.setUser({ id: currentUserId });
     }
   },
 
@@ -90,16 +87,16 @@ export default Route.extend(ApplicationRouteMixin, {
       });
 
       return true;
-    }
+    },
   },
 
   //Override the default session invalidator so we can do auth stuff
   sessionInvalidated() {
-    Sentry.configureScope(scope => scope.clear());
+    Sentry.configureScope((scope) => scope.clear());
     if (config.environment !== 'test') {
       const logoutUrl = '/auth/logout';
-      return this.fetch.getJsonFromApiHost(logoutUrl).then(response => {
-        if(response.status === 'redirect'){
+      return this.fetch.getJsonFromApiHost(logoutUrl).then((response) => {
+        if (response.status === 'redirect') {
           window.location.replace(response.logoutUrl);
         } else {
           this.flashMessages.success('general.confirmLogout');
@@ -107,5 +104,5 @@ export default Route.extend(ApplicationRouteMixin, {
         }
       });
     }
-  }
+  },
 });

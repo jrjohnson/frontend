@@ -11,7 +11,7 @@ export default Component.extend({
   intl: service(),
   iliosSearch: service('search'),
   store: service(),
-  tagName: "",
+  tagName: '',
   page: null,
   query: null,
   selectedYear: null,
@@ -27,39 +27,45 @@ export default Component.extend({
   results: reads('search.lastSuccessful.value'),
   allSchools: reads('loadSchools.lastSuccessful.value'),
 
-  ignoredSchoolTitles: computed('ignoredSchoolIds.[]', 'allSchools.[]', function() {
+  ignoredSchoolTitles: computed('ignoredSchoolIds.[]', 'allSchools.[]', function () {
     if (!this.ignoredSchoolIds) {
       return [];
     }
-    return this.ignoredSchoolIds.map(id => {
+    return this.ignoredSchoolIds.map((id) => {
       const school = this.allSchools.findBy('id', id);
       return school ? school.title : '';
     });
   }),
 
-  filteredResults: computed('results.[]', 'selectedYear', 'ignoredSchoolTitles.[]', function() {
+  filteredResults: computed('results.[]', 'selectedYear', 'ignoredSchoolTitles.[]', function () {
     if (this.results) {
-      const yearFilteredResults = this.results.filter(course => this.selectedYear ? course.year === this.selectedYear : true);
-      return yearFilteredResults.filter(course => !this.ignoredSchoolTitles.includes(course.school));
+      const yearFilteredResults = this.results.filter((course) =>
+        this.selectedYear ? course.year === this.selectedYear : true
+      );
+      return yearFilteredResults.filter(
+        (course) => !this.ignoredSchoolTitles.includes(course.school)
+      );
     } else {
       return [];
     }
   }),
 
-  paginatedResults: computed('filteredResults.[]', 'page', 'size', function() {
+  paginatedResults: computed('filteredResults.[]', 'page', 'size', function () {
     const { page, size } = this.getProperties('page', 'size');
-    return this.filteredResults.slice((page * size) - size, page * size);
+    return this.filteredResults.slice(page * size - size, page * size);
   }),
 
   schoolOptions: computed('allSchools.[]', 'results.[]', function () {
     if (this.results && this.results.length && this.allSchools && this.allSchools.length) {
-      const emptySchools = this.allSchools.map(({id, title}) => {
-        return {
-          id,
-          title,
-          results: 0
-        };
-      }).sortBy('title');
+      const emptySchools = this.allSchools
+        .map(({ id, title }) => {
+          return {
+            id,
+            title,
+            results: 0,
+          };
+        })
+        .sortBy('title');
       const options = this.results.reduce((set, course) => {
         const schoolOption = set.findBy('title', course.school);
         schoolOption.results++;
@@ -97,7 +103,7 @@ export default Component.extend({
 
       this.onSelectPage(1);
       this.setIgnoredSchoolIds(ignoredSchoolIds);
-    }
+    },
   },
 
   search: task(function* () {
@@ -116,5 +122,5 @@ export default Component.extend({
   setUpYearFilter(years) {
     const yearOptions = years.uniq().sort().reverse();
     this.set('yearOptions', yearOptions);
-  }
+  },
 });

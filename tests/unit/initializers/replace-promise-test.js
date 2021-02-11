@@ -5,22 +5,22 @@ import Resolver from 'ember-resolver';
 import destroyApp from '../../helpers/destroy-app';
 import RSVP from 'rsvp';
 
-module('Unit | Initializer | replace promise', function(hooks) {
-  hooks.beforeEach(function() {
+module('Unit | Initializer | replace promise', function (hooks) {
+  hooks.beforeEach(function () {
     this.TestApplication = class TestApplication extends Application {};
     this.TestApplication.initializer({
       name: 'replace promise initializer',
-      initialize
+      initialize,
     });
 
     this.application = this.TestApplication.create({ autoboot: false, Resolver });
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     destroyApp(this.application);
   });
 
-  test('it works', async function(assert) {
+  test('it works', async function (assert) {
     await this.application.boot();
     assert.ok(window.Promise === RSVP.Promise);
   });

@@ -28,20 +28,22 @@ export default class LearnergroupCohortUserManagerComponent extends Component {
   get filteredUsers() {
     const filter = this.filter.trim().toLowerCase();
 
-    if (!filter){
+    if (!filter) {
       return this.args.users;
     }
 
     return this.args.users.filter((user) => {
-      return user.fullNameFromFirstLastName.trim().toLowerCase().includes(filter) ||
+      return (
+        user.fullNameFromFirstLastName.trim().toLowerCase().includes(filter) ||
         user.fullName.trim().toLowerCase().includes(filter) ||
-        user.email.trim().toLowerCase().includes(filter);
+        user.email.trim().toLowerCase().includes(filter)
+      );
     });
   }
 
   @action
   setSortBy(what) {
-    if(this.args.sortBy === what){
+    if (this.args.sortBy === what) {
       what += ':desc';
     }
     this.args.setSortBy(what);
@@ -50,7 +52,7 @@ export default class LearnergroupCohortUserManagerComponent extends Component {
   @action
   toggleUserSelection(user) {
     if (this.selectedUsers.includes(user)) {
-      this.selectedUsers = this.selectedUsers.filter(selectedUser => selectedUser !== user);
+      this.selectedUsers = this.selectedUsers.filter((selectedUser) => selectedUser !== user);
     } else {
       this.selectedUsers = [...this.selectedUsers, user];
     }
@@ -58,7 +60,9 @@ export default class LearnergroupCohortUserManagerComponent extends Component {
 
   @action
   toggleUserSelectionAllOrNone() {
-    const unselectedFilteredUsers = this.filteredUsers.filter(user => !this.selectedUsers.includes(user));
+    const unselectedFilteredUsers = this.filteredUsers.filter(
+      (user) => !this.selectedUsers.includes(user)
+    );
     if (this.filteredUsers && unselectedFilteredUsers.length) {
       this.selectedUsers = [...this.selectedUsers, ...unselectedFilteredUsers];
     } else {
@@ -72,7 +76,7 @@ export default class LearnergroupCohortUserManagerComponent extends Component {
     //timeout gives the spinner time to render
     yield timeout(1);
     yield this.args.addUserToGroup(user);
-    this.usersBeingMoved = this.usersBeingMoved.filter(movingUser => movingUser !== user);
+    this.usersBeingMoved = this.usersBeingMoved.filter((movingUser) => movingUser !== user);
   }
 
   @enqueueTask
@@ -81,7 +85,7 @@ export default class LearnergroupCohortUserManagerComponent extends Component {
     //timeout gives the spinner time to render
     yield timeout(1);
     yield this.args.addUsersToGroup(this.selectedUsers);
-    this.usersBeingMoved = this.usersBeingMoved.filter(user => this.selectedUsers.includes(user));
+    this.usersBeingMoved = this.usersBeingMoved.filter((user) => this.selectedUsers.includes(user));
     this.selectedUsers = [];
   }
 }

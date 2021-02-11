@@ -14,7 +14,7 @@ export default Component.extend({
 
   store: service(),
 
-  tagName: "",
+  tagName: '',
   canCreate: false,
   editorOn: false,
   itemsToSave: null,
@@ -26,7 +26,7 @@ export default Component.extend({
 
   existingStartYears: mapBy('programYears', 'startYear'),
 
-  sortedContent: computed('programYears.[]', async function() {
+  sortedContent: computed('programYears.[]', async function () {
     const programYears = await this.programYears;
     if (isEmpty(programYears)) {
       return [];
@@ -34,15 +34,15 @@ export default Component.extend({
     return programYears.toArray().sortBy('academicYear');
   }),
 
-  proxiedProgramYears: computed('sortedContent.[]', async function() {
+  proxiedProgramYears: computed('sortedContent.[]', async function () {
     const permissionChecker = this.permissionChecker;
     const currentUser = this.currentUser;
     const programYears = await this.sortedContent;
-    return programYears.map(programYear => {
+    return programYears.map((programYear) => {
       return ProgramYearProxy.create({
         content: programYear,
         currentUser,
-        permissionChecker
+        permissionChecker,
       });
     });
   }),
@@ -56,12 +56,14 @@ export default Component.extend({
         years.pushObject(firstYear + i);
       }
 
-      return years.filter((year) => {
-        return !this.existingStartYears.includes(year.toString());
-      }).map((startYear) => {
-        return { label: `${startYear} - ${startYear + 1}`, value: startYear };
-      });
-    }
+      return years
+        .filter((year) => {
+          return !this.existingStartYears.includes(year.toString());
+        })
+        .map((startYear) => {
+          return { label: `${startYear} - ${startYear + 1}`, value: startYear };
+        });
+    },
   }).readOnly(),
 
   actions: {
@@ -92,12 +94,12 @@ export default Component.extend({
     },
 
     unlockProgramYear(programYearProxy) {
-      programYearProxy.get('userCanUnLock').then(permission => {
+      programYearProxy.get('userCanUnLock').then((permission) => {
         if (permission) {
-          run(()=>{
+          run(() => {
             programYearProxy.set('isSaving', true);
           });
-          this.unlock(programYearProxy.get('content')).then(()=>{
+          this.unlock(programYearProxy.get('content')).then(() => {
             programYearProxy.set('isSaving', false);
           });
         }
@@ -105,12 +107,12 @@ export default Component.extend({
     },
 
     lockProgramYear(programYearProxy) {
-      programYearProxy.get('userCanLock').then(permission => {
+      programYearProxy.get('userCanLock').then((permission) => {
         if (permission) {
-          run(()=>{
+          run(() => {
             programYearProxy.set('isSaving', true);
           });
-          this.lock(programYearProxy.get('content')).then(()=>{
+          this.lock(programYearProxy.get('content')).then(() => {
             programYearProxy.set('isSaving', false);
           });
         }
@@ -184,7 +186,7 @@ export default Component.extend({
           ancestor,
           meshDescriptors,
           competency,
-          terms
+          terms,
         });
         yield newProgramYearObjective.save();
         this.incrementSavedItems();
@@ -193,7 +195,7 @@ export default Component.extend({
     this.set('itemsToSave', itemsToSave);
     this.setProperties({ saved: true, savedProgramYear: newProgramYear });
     this.send('cancel');
-  }).drop()
+  }).drop(),
 });
 
 const ProgramYearProxy = ObjectProxy.extend({
@@ -203,7 +205,7 @@ const ProgramYearProxy = ObjectProxy.extend({
   permissionChecker: null,
   showRemoveConfirmation: false,
 
-  userCanDelete: computed('content', 'currentUser.model.programYears.[]', async function() {
+  userCanDelete: computed('content', 'currentUser.model.programYears.[]', async function () {
     const programYear = this.content;
     const permissionChecker = this.permissionChecker;
     const cohort = await programYear.get('cohort');
@@ -214,13 +216,13 @@ const ProgramYearProxy = ObjectProxy.extend({
     return permissionChecker.canDeleteProgramYear(programYear);
   }),
 
-  userCanLock: computed('content', 'currentUser.model.programYears.[]', async function() {
+  userCanLock: computed('content', 'currentUser.model.programYears.[]', async function () {
     const programYear = this.content;
     const permissionChecker = this.permissionChecker;
     return permissionChecker.canLockProgramYear(programYear);
   }),
 
-  userCanUnLock: computed('content', 'currentUser.model.programYears.[]', async function() {
+  userCanUnLock: computed('content', 'currentUser.model.programYears.[]', async function () {
     const programYear = this.content;
     const permissionChecker = this.permissionChecker;
     return permissionChecker.canUnlockProgramYear(programYear);

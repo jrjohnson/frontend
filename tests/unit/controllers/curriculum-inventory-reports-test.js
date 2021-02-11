@@ -4,13 +4,13 @@ import { resolve } from 'rsvp';
 import Service from '@ember/service';
 import EmberObject from '@ember/object';
 
-module('Unit | Controller | curriculum-inventory-reports', function(hooks) {
+module('Unit | Controller | curriculum-inventory-reports', function (hooks) {
   setupTest(hooks);
 
-  test('selectedSchool', async function(assert) {
+  test('selectedSchool', async function (assert) {
     assert.expect(4);
 
-    const schoolId =  10;
+    const schoolId = 10;
     const currentUsersSchoolMock = EmberObject.create();
     const schoolMock = EmberObject.create();
     const userMock = EmberObject.create({
@@ -20,7 +20,7 @@ module('Unit | Controller | curriculum-inventory-reports', function(hooks) {
       model: resolve(userMock),
     });
     const modelMock = EmberObject.create({
-      findBy: function(attr, id) {
+      findBy: function (attr, id) {
         assert.equal(attr, 'id');
         assert.equal(id, schoolId);
         return schoolMock;

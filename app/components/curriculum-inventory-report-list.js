@@ -15,13 +15,13 @@ const ReportProxy = ObjectProxy.extend({
   isNotPublished: not('isPublished'),
   isPublished: alias('isFinalized'),
 
-  userCanDelete: computed('content', 'content.isFinalized', 'currentUser.model', async function() {
+  userCanDelete: computed('content', 'content.isFinalized', 'currentUser.model', async function () {
     const report = this.content;
     if (report.isFinalized) {
       return false;
     }
     return this.permissionChecker.canDeleteCurriculumInventoryReport(report);
-  })
+  }),
 });
 
 export default class CurriculumInventoryReportListComponent extends Component {
@@ -30,15 +30,15 @@ export default class CurriculumInventoryReportListComponent extends Component {
   @service permissionChecker;
 
   get proxiedReports() {
-    if (! this.args.reports) {
+    if (!this.args.reports) {
       return [];
     }
-    return this.args.reports.toArray().map(report => {
+    return this.args.reports.toArray().map((report) => {
       return ReportProxy.create({
         content: report,
         intl: this.intl,
         currentUser: this.currentUser,
-        permissionChecker: this.permissionChecker
+        permissionChecker: this.permissionChecker,
       });
     });
   }
@@ -72,8 +72,8 @@ export default class CurriculumInventoryReportListComponent extends Component {
   }
 
   @action
-  setSortBy(what){
-    if(this.sortBy === what){
+  setSortBy(what) {
+    if (this.sortBy === what) {
       what += ':desc';
     }
     this.args.setSortBy(what);

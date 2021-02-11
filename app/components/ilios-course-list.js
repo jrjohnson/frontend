@@ -18,7 +18,7 @@ export default class IliosCourseListComponent extends Component {
     this.savingCourseIds = [...this.savingCourseIds, id];
   }
   stopSavingCourse(courseId) {
-    this.savingCourseIds = this.savingCourseIds.filter(id => id !== courseId);
+    this.savingCourseIds = this.savingCourseIds.filter((id) => id !== courseId);
   }
 
   get sortingByStatus() {
@@ -62,13 +62,15 @@ export default class IliosCourseListComponent extends Component {
   }
 
   @action
-  cancelRemove(course){
-    this.coursesForRemovalConfirmation = this.coursesForRemovalConfirmation.filter(id => id !== course.id);
+  cancelRemove(course) {
+    this.coursesForRemovalConfirmation = this.coursesForRemovalConfirmation.filter(
+      (id) => id !== course.id
+    );
   }
 
   @action
-  setSortBy(what){
-    if(this.args.sortBy === what){
+  setSortBy(what) {
+    if (this.args.sortBy === what) {
       what += ':desc';
     }
     this.args.setSortBy(what);

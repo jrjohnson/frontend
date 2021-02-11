@@ -12,7 +12,7 @@ const Validations = buildValidations({
     validator('length', {
       min: 0,
       max: 21844,
-      allowBlank: true
+      allowBlank: true,
     }),
   ],
   startDate: [
@@ -25,8 +25,8 @@ const Validations = buildValidations({
     validator('date', {
       dependentKeys: ['model.startDate'],
       onOrAfter: reads('model.startDate'),
-    })
-  ]
+    }),
+  ],
 });
 
 export default Component.extend(Validations, ValidationErrorDisplay, {
@@ -34,7 +34,7 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
   permissionChecker: service(),
   router: service(),
   routing: service('-routing'),
-  tagName: "",
+  tagName: '',
   canUpdate: false,
   currentRoute: '',
   description: null,
@@ -44,22 +44,27 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
   year: null,
   yearOptions: null,
 
-  yearLabel: computed('year', function() {
+  yearLabel: computed('year', function () {
     const year = this.year;
     return year + ' - ' + (parseInt(year, 10) + 1);
   }),
 
-  showRollover: computed('report.program', 'currentUser', 'routing.currentRouteName', async function() {
-    const routing = this.routing;
-    if (routing.get('currentRouteName') === 'curriculumInventoryReport.rollover') {
-      return false;
+  showRollover: computed(
+    'report.program',
+    'currentUser',
+    'routing.currentRouteName',
+    async function () {
+      const routing = this.routing;
+      if (routing.get('currentRouteName') === 'curriculumInventoryReport.rollover') {
+        return false;
+      }
+      const permissionChecker = this.permissionChecker;
+      const report = this.report;
+      const program = await report.get('program');
+      const school = await program.get('school');
+      return await permissionChecker.canCreateCurriculumInventoryReport(school);
     }
-    const permissionChecker = this.permissionChecker;
-    const report = this.report;
-    const program = await report.get('program');
-    const school = await program.get('school');
-    return await permissionChecker.canCreateCurriculumInventoryReport(school);
-  }),
+  ),
 
   didReceiveAttrs() {
     this._super(...arguments);
@@ -72,10 +77,10 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
     const endDate = report.get('endDate');
 
     let yearOptions = [];
-    yearOptions.pushObject(EmberObject.create({'id': year, 'title': yearLabel}));
+    yearOptions.pushObject(EmberObject.create({ id: year, title: yearLabel }));
     for (let i = currentYear - 5, n = currentYear + 5; i <= n; i++) {
       if (i != year) {
-        yearOptions.pushObject(EmberObject.create({'id': i, 'title': i + ' - ' + (i + 1)}));
+        yearOptions.pushObject(EmberObject.create({ id: i, title: i + ' - ' + (i + 1) }));
       }
     }
 
@@ -85,7 +90,7 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
       yearOptions,
       startDate,
       endDate,
-      year
+      year,
     });
   },
 
@@ -139,7 +144,7 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
       report.save();
     },
 
-    revertYearChanges(){
+    revertYearChanges() {
       this.set('year', this.report.get('year'));
     },
 
@@ -160,7 +165,7 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
       }
     },
 
-    revertDescriptionChanges(){
+    revertDescriptionChanges() {
       const report = this.report;
       this.set('description', report.get('description'));
     },
@@ -173,5 +178,5 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
     updateYear({ target }) {
       this.set('year', Number(target.value));
     },
-  }
+  },
 });

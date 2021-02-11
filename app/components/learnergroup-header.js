@@ -8,13 +8,13 @@ const Validations = buildValidations({
     validator('presence', true),
     validator('length', {
       min: 3,
-      max: 60
-    })
-  ]
+      max: 60,
+    }),
+  ],
 });
 
 export default Component.extend(Validations, ValidationErrorDisplay, {
-  tagName: "",
+  tagName: '',
   canUpdate: false,
   learnerGroup: null,
   title: null,
@@ -31,14 +31,14 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
     revertTitleChanges() {
       const learnerGroup = this.learnerGroup;
       this.set('title', learnerGroup.get('title'));
-    }
+    },
   },
 
   changeTitle: task(function* () {
     const learnerGroup = this.learnerGroup;
     const newTitle = this.title;
     this.send('addErrorDisplayFor', 'title');
-    const {validations} = yield this.validate();
+    const { validations } = yield this.validate();
     if (validations.get('isValid')) {
       this.send('removeErrorDisplayFor', 'title');
       learnerGroup.set('title', newTitle);
@@ -47,5 +47,5 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
     } else {
       throw false;
     }
-  })
+  }),
 });

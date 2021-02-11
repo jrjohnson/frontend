@@ -10,5 +10,5 @@ export default Controller.extend({
       programYear.set('locked', false);
       return programYear.save();
     },
-  }
+  },
 });

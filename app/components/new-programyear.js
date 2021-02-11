@@ -3,12 +3,12 @@ import { computed } from '@ember/object';
 import { task } from 'ember-concurrency';
 
 export default Component.extend({
-  tagName: "",
+  tagName: '',
 
   availableAcademicYears: null,
   year: null,
 
-  selectedYear: computed('year', 'availableAcademicYears.[]', function() {
+  selectedYear: computed('year', 'availableAcademicYears.[]', function () {
     const year = this.year;
     const availableAcademicYears = this.availableAcademicYears;
     if (!year) {
@@ -22,5 +22,5 @@ export default Component.extend({
     const selectedYear = this.selectedYear;
     const startYear = parseInt(selectedYear.value, 10);
     yield this.save(startYear);
-  }).drop()
+  }).drop(),
 });

@@ -1,23 +1,16 @@
 import { resolve } from 'rsvp';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import {
-  render,
-  click,
-  find,
-  findAll,
-  fillIn,
-  triggerKeyEvent
-} from '@ember/test-helpers';
+import { render, click, find, findAll, fillIn, triggerKeyEvent } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import moment from 'moment';
 import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
-module('Integration | Component | new curriculum inventory report', function(hooks) {
+module('Integration | Component | new curriculum inventory report', function (hooks) {
   setupRenderingTest(hooks);
   setupMirage(hooks);
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     assert.expect(20);
 
     const program = this.server.create('program', { id: 1, title: 'Doctor of Medicine' });
@@ -34,24 +27,51 @@ module('Integration | Component | new curriculum inventory report', function(hoo
     const lastYear = currentYear + 5;
     const lastYearLabel = `${lastYear} - ${lastYear + 1}`;
 
-    assert.dom('[data-test-program-title] label').hasText('Program:', 'program title is labeled correctly.');
-    assert.dom('[data-test-program-title] span').hasText(program.title, 'Program title is displayed.');
-    assert.dom('[data-test-academic-year] label').hasText('Academic Year:', 'Academic year input is labeled correctly.');
-    assert.dom('[data-test-academic-year] option').exists({ count: 11 }, 'Academic year dropdown has eleven options.');
+    assert
+      .dom('[data-test-program-title] label')
+      .hasText('Program:', 'program title is labeled correctly.');
+    assert
+      .dom('[data-test-program-title] span')
+      .hasText(program.title, 'Program title is displayed.');
+    assert
+      .dom('[data-test-academic-year] label')
+      .hasText('Academic Year:', 'Academic year input is labeled correctly.');
+    assert
+      .dom('[data-test-academic-year] option')
+      .exists({ count: 11 }, 'Academic year dropdown has eleven options.');
     const select = find('[data-test-academic-year] select');
     assert.equal(
       select.options[select.selectedIndex].value,
       currentYear,
       'Current year is selected by default.'
     );
-    assert.dom(select.options[select.selectedIndex]).hasText(currentYearLabel, 'Current year label is correct.');
-    assert.dom('[data-test-academic-year] option').hasValue(firstYear.toString(), 'First year in dropdown is five years prior to current year.');
-    assert.dom('[data-test-academic-year] option').hasText(firstYearLabel, 'First year label is correct.');
-    assert.dom(findAll('[data-test-academic-year] option')[10]).hasValue(lastYear.toString(), 'Last year in dropdown is five years ahead of current year.');
-    assert.dom(findAll('[data-test-academic-year] option')[10]).hasText(lastYearLabel, 'Last year label is correct.');
-    assert.dom('[data-test-description] textarea').exists({ count: 1 }, 'Description input is present.');
-    assert.dom('[data-test-description] textarea').hasValue('', 'Description input is initially empty.');
-    assert.dom('[data-test-description] label').hasText('Description:', 'Description input is labeled correctly.');
+    assert
+      .dom(select.options[select.selectedIndex])
+      .hasText(currentYearLabel, 'Current year label is correct.');
+    assert
+      .dom('[data-test-academic-year] option')
+      .hasValue(
+        firstYear.toString(),
+        'First year in dropdown is five years prior to current year.'
+      );
+    assert
+      .dom('[data-test-academic-year] option')
+      .hasText(firstYearLabel, 'First year label is correct.');
+    assert
+      .dom(findAll('[data-test-academic-year] option')[10])
+      .hasValue(lastYear.toString(), 'Last year in dropdown is five years ahead of current year.');
+    assert
+      .dom(findAll('[data-test-academic-year] option')[10])
+      .hasText(lastYearLabel, 'Last year label is correct.');
+    assert
+      .dom('[data-test-description] textarea')
+      .exists({ count: 1 }, 'Description input is present.');
+    assert
+      .dom('[data-test-description] textarea')
+      .hasValue('', 'Description input is initially empty.');
+    assert
+      .dom('[data-test-description] label')
+      .hasText('Description:', 'Description input is labeled correctly.');
     assert.dom('[data-test-name] input').exists({ count: 1 }, 'Name input is present.');
     assert.dom('[data-test-name] input').hasValue('', 'Name input is initially empty.');
     assert.dom('[data-test-name] label').hasText('Name:', 'Name input is labeled correctly.');
@@ -61,8 +81,7 @@ module('Integration | Component | new curriculum inventory report', function(hoo
     assert.dom('button.cancel').hasText('Cancel', 'Cancel button is labeled correctly.');
   });
 
-
-  test('save', async function(assert) {
+  test('save', async function (assert) {
     assert.expect(6);
 
     const program = this.server.create('program', { id: 1, title: 'Doctor of Medicine' });
@@ -89,15 +108,16 @@ module('Integration | Component | new curriculum inventory report', function(hoo
       return resolve(true);
     });
 
-    await render(hbs`<NewCurriculumInventoryReport @currentProgram={{program}} @save={{action saveReport}} />`);
+    await render(
+      hbs`<NewCurriculumInventoryReport @currentProgram={{program}} @save={{action saveReport}} />`
+    );
     await fillIn('[data-test-name] input', 'new report');
     await fillIn('[data-test-description] textarea', 'lorem ipsum');
     await fillIn('[data-test-academic-year] select', expectedSelectedYear);
     await click('button.done');
   });
 
-
-  test('cancel', async function(assert) {
+  test('cancel', async function (assert) {
     assert.expect(1);
     const program = this.server.create('program', { id: 1, title: 'Doctor of Medicine' });
     const programModel = await this.owner.lookup('service:store').find('program', program.id);
@@ -106,11 +126,13 @@ module('Integration | Component | new curriculum inventory report', function(hoo
     this.set('cancelReport', () => {
       assert.ok(true, 'Cancel action got invoked.');
     });
-    await render(hbs`<NewCurriculumInventoryReport @currentProgram={{program}} @cancel={{action cancelReport}} />`);
+    await render(
+      hbs`<NewCurriculumInventoryReport @currentProgram={{program}} @cancel={{action cancelReport}} />`
+    );
     await click('button.cancel');
   });
 
-  test('pressing enter in name input field fires save action', async function(assert) {
+  test('pressing enter in name input field fires save action', async function (assert) {
     assert.expect(1);
 
     const program = this.server.create('program', { id: 1, title: 'Doctor of Medicine' });
@@ -122,12 +144,14 @@ module('Integration | Component | new curriculum inventory report', function(hoo
       return resolve(true);
     });
 
-    await render(hbs`<NewCurriculumInventoryReport @currentProgram={{program}} @save={{action saveReport}} />`);
+    await render(
+      hbs`<NewCurriculumInventoryReport @currentProgram={{program}} @save={{action saveReport}} />`
+    );
     await fillIn('[data-test-name] input', 'new report');
     await triggerKeyEvent('[data-test-name] input', 'keyup', 13);
   });
 
-  test('validation errors do not show up initially', async function(assert) {
+  test('validation errors do not show up initially', async function (assert) {
     assert.expect(1);
     const program = this.server.create('program', { id: 1, title: 'Doctor of Medicine' });
     const programModel = await this.owner.lookup('service:store').find('program', program.id);
@@ -137,7 +161,7 @@ module('Integration | Component | new curriculum inventory report', function(hoo
     assert.dom('.validation-error-message').doesNotExist();
   });
 
-  test('validation errors show up when saving with empty report name', async function(assert) {
+  test('validation errors show up when saving with empty report name', async function (assert) {
     assert.expect(1);
     const program = this.server.create('program', { id: 1, title: 'Doctor of Medicine' });
     const programModel = await this.owner.lookup('service:store').find('program', program.id);
@@ -148,7 +172,7 @@ module('Integration | Component | new curriculum inventory report', function(hoo
     assert.dom('.validation-error-message').exists({ count: 1 });
   });
 
-  test('validation errors show up when saving with a too long report name', async function(assert) {
+  test('validation errors show up when saving with a too long report name', async function (assert) {
     assert.expect(1);
     const program = this.server.create('program', { id: 1, title: 'Doctor of Medicine' });
     const programModel = await this.owner.lookup('service:store').find('program', program.id);

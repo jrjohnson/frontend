@@ -1,15 +1,12 @@
 import { currentRouteName, findAll, visit } from '@ember/test-helpers';
-import {
-  module,
-  test
-} from 'qunit';
+import { module, test } from 'qunit';
 import setupAuthentication from 'ilios/tests/helpers/setup-authentication';
 
 import { setupApplicationTest } from 'ember-qunit';
 import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 import { getElementText, getText } from 'ilios-common';
 
-module('Acceptance | Program - Publication Check', function(hooks) {
+module('Acceptance | Program - Publication Check', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
   hooks.beforeEach(async function () {
@@ -29,12 +26,12 @@ module('Acceptance | Program - Publication Check', function(hooks) {
     this.server.create('programYearObjective', { programYear: this.fullProgramYear });
     this.emptyProgramYear = this.server.create('programYear', {
       startYear: 2013,
-      programId: 1
+      programId: 1,
     });
     this.server.createList('cohort', 2);
   });
 
-  test('full program count', async function(assert) {
+  test('full program count', async function (assert) {
     await visit('/programs/1/programyears/' + this.fullProgramYear.id + '/publicationcheck');
     assert.equal(currentRouteName(), 'programYear.publicationCheck');
     var items = findAll('.programyear-publication-check .detail-content table tbody td');
@@ -45,7 +42,7 @@ module('Acceptance | Program - Publication Check', function(hooks) {
     assert.equal(await getElementText(items[4]), getText('Yes (1)'));
   });
 
-  test('empty program count', async function(assert) {
+  test('empty program count', async function (assert) {
     await visit('/programs/1/programyears/' + this.emptyProgramYear.id + '/publicationcheck');
     assert.equal(currentRouteName(), 'programYear.publicationCheck');
     var items = findAll('.programyear-publication-check .detail-content table tbody td');

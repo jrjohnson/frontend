@@ -34,9 +34,13 @@ export default class ProgramYearObjectiveListItemComponent extends Component {
     this.title = programYearObjective.title;
   }
 
-
   get isManaging() {
-    return this.isManagingCompetency || this.isManagingDescriptors || this.isManagingTerms || this.isExpanded;
+    return (
+      this.isManagingCompetency ||
+      this.isManagingDescriptors ||
+      this.isManagingTerms ||
+      this.isExpanded
+    );
   }
 
   get canDelete() {
@@ -83,7 +87,6 @@ export default class ProgramYearObjectiveListItemComponent extends Component {
     this.isManagingTerms = true;
   }
 
-
   @restartableTask
   *highlightSave() {
     yield timeout(1000);
@@ -116,7 +119,6 @@ export default class ProgramYearObjectiveListItemComponent extends Component {
     this.highlightSave.perform();
   }
 
-
   @action
   revertTitleChanges() {
     this.title = this.args.programYearObjective.title;
@@ -137,7 +139,7 @@ export default class ProgramYearObjectiveListItemComponent extends Component {
   }
   @action
   removeDescriptorFromBuffer(descriptor) {
-    this.descriptorsBuffer = this.descriptorsBuffer.filter(obj => obj.id !== descriptor.id);
+    this.descriptorsBuffer = this.descriptorsBuffer.filter((obj) => obj.id !== descriptor.id);
   }
   @action
   addTermToBuffer(term) {
@@ -145,7 +147,7 @@ export default class ProgramYearObjectiveListItemComponent extends Component {
   }
   @action
   removeTermFromBuffer(term) {
-    this.termsBuffer = this.termsBuffer.filter(obj => obj.id !== term.id);
+    this.termsBuffer = this.termsBuffer.filter((obj) => obj.id !== term.id);
   }
   @action
   cancel() {

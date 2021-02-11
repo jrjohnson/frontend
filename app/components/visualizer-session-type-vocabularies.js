@@ -14,9 +14,9 @@ export default class VisualizerSessionTypeVocabulariesComponent extends Componen
   @tracked data = [];
 
   @restartableTask
-  * load(element, [sessionType]) {
+  *load(element, [sessionType]) {
     const sessions = (yield sessionType.sessions).toArray();
-    const terms = yield map(sessions, async session => {
+    const terms = yield map(sessions, async (session) => {
       const sessionTerms = (await session.terms).toArray();
       const course = await session.course;
       const courseTerms = (await course.terms).toArray();
@@ -24,7 +24,7 @@ export default class VisualizerSessionTypeVocabulariesComponent extends Componen
       return [...sessionTerms, ...courseTerms];
     });
 
-    const termsWithVocabularies = yield map(terms.flat(), async term => {
+    const termsWithVocabularies = yield map(terms.flat(), async (term) => {
       const vocabulary = await term.vocabulary;
       return { term, vocabulary };
     });
@@ -34,7 +34,7 @@ export default class VisualizerSessionTypeVocabulariesComponent extends Componen
       if (!(id in vocabularies)) {
         vocabularies[id] = {
           data: 0,
-          meta: { vocabulary }
+          meta: { vocabulary },
         };
       }
       vocabularies[id].data++;
@@ -43,8 +43,8 @@ export default class VisualizerSessionTypeVocabulariesComponent extends Componen
 
     const vocabularyData = Object.values(vocabularyObjects);
     const totalTerms = vocabularyData.mapBy('data').reduce((total, count) => total + count, 0);
-    this.data = vocabularyData.map(obj => {
-      const percent = (obj.data / totalTerms * 100).toFixed(1);
+    this.data = vocabularyData.map((obj) => {
+      const percent = ((obj.data / totalTerms) * 100).toFixed(1);
       obj.label = `${percent}%`;
 
       return obj;
@@ -52,7 +52,7 @@ export default class VisualizerSessionTypeVocabulariesComponent extends Componen
   }
 
   get vocabulariesWithLinkedTerms() {
-    return this.data.filter(obj => obj.data !== 0);
+    return this.data.filter((obj) => obj.data !== 0);
   }
 
   @action
@@ -61,7 +61,11 @@ export default class VisualizerSessionTypeVocabulariesComponent extends Componen
       return;
     }
 
-    this.router.transitionTo('session-type-visualize-terms', this.args.sessionType.id, obj.meta.vocabulary.id);
+    this.router.transitionTo(
+      'session-type-visualize-terms',
+      this.args.sessionType.id,
+      obj.meta.vocabulary.id
+    );
   }
 
   getTooltipData(obj) {
@@ -75,7 +79,7 @@ export default class VisualizerSessionTypeVocabulariesComponent extends Componen
 
     return {
       title,
-      content: title
+      content: title,
     };
   }
 

@@ -12,7 +12,7 @@ export default Controller.extend({
   queryParams: {
     programId: 'program',
     schoolId: 'school',
-    sortReportsBy: 'sortBy'
+    sortReportsBy: 'sortBy',
   },
 
   newReport: null,
@@ -31,7 +31,7 @@ export default Controller.extend({
    * @type {Ember.computed}
    * @public
    */
-  selectedSchool: computed('model.[]', 'schoolId', async function () {
+  selectedSchool: computed('currentUser.model', 'model.[]', 'schoolId', async function () {
     if (!this.schoolId) {
       const user = await this.currentUser.model;
       return await user.school;
@@ -46,10 +46,10 @@ export default Controller.extend({
    * @type {Ember.computed}
    * @protected
    */
-  programs: computed('selectedSchool', async function() {
+  programs: computed('selectedSchool', 'store', async function () {
     const school = await this.selectedSchool;
 
-    if (isEmpty(school)){
+    if (isEmpty(school)) {
       return [];
     } else {
       const filters = { school: school.id };
@@ -65,7 +65,7 @@ export default Controller.extend({
    * @type {Ember.computed}
    * @public
    */
-  selectedProgram: computed('programs.[]', 'programId', async function() {
+  selectedProgram: computed('programs.[]', 'programId', async function () {
     const programs = await this.programs;
     const programId = this.programId;
     let program;
@@ -89,9 +89,9 @@ export default Controller.extend({
 
   actions: {
     changeSelectedProgram(programId) {
-      this.programs.then(programs => {
+      this.programs.then((programs) => {
         const program = programs.findBy('id', programId);
-        program.get('school').then(school => {
+        program.get('school').then((school) => {
           this.set('schoolId', school.get('id'));
           this.set('programId', programId);
           this.set('showNewCurriculumInventoryReportForm', false);
@@ -110,8 +110,8 @@ export default Controller.extend({
     },
 
     removeCurriculumInventoryReport(report) {
-      this.selectedProgram.then(program => {
-        program.get('curriculumInventoryReports').then(reports => {
+      this.selectedProgram.then((program) => {
+        program.get('curriculumInventoryReports').then((reports) => {
           reports.removeObject(report);
           report.destroyRecord();
         });
@@ -133,6 +133,6 @@ export default Controller.extend({
 
     cancel() {
       this.set('showNewCurriculumInventoryReportForm', false);
-    }
-  }
+    },
+  },
 });

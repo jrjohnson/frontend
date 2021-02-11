@@ -6,14 +6,15 @@ import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 import moment from 'moment';
 import { component } from 'ilios/tests/pages/components/user-profile-permissions';
 
-module('Integration | Component | user-profile-permissions', function(hooks) {
+module('Integration | Component | user-profile-permissions', function (hooks) {
   setupRenderingTest(hooks);
   setupMirage(hooks);
 
   hooks.beforeEach(async function () {
     this.schools = this.server.createList('school', 2);
     this.thisYear = parseInt(moment().format('YYYY'), 10);
-    this.currentAcademicYear = Number(moment().format('M')) >= 6 ? this.thisYear : this.thisYear - 1;
+    this.currentAcademicYear =
+      Number(moment().format('M')) >= 6 ? this.thisYear : this.thisYear - 1;
     this.server.create('academic-year', { id: this.thisYear - 1 });
     this.server.create('academic-year', { id: this.thisYear });
     this.server.create('academic-year', { id: this.thisYear + 1 });
@@ -83,14 +84,14 @@ module('Integration | Component | user-profile-permissions', function(hooks) {
 
     this.server.create('course', {
       school: this.schools[1],
-      directors: [ user ],
-      year: this.currentAcademicYear
+      directors: [user],
+      year: this.currentAcademicYear,
     });
 
     this.server.create('course', {
       school: this.schools[1],
-      administrators: [ user ],
-      year: this.currentAcademicYear + 1
+      administrators: [user],
+      year: this.currentAcademicYear + 1,
     });
 
     const userModel = await this.owner.lookup('service:store').find('user', user.id);
@@ -164,7 +165,7 @@ module('Integration | Component | user-profile-permissions', function(hooks) {
     });
     const programYear = this.server.create('program-year', {
       program,
-      directors: [user]
+      directors: [user],
     });
     this.server.create('cohort', { programYear });
     const userModel = await this.owner.lookup('service:store').find('user', user.id);
@@ -202,7 +203,7 @@ module('Integration | Component | user-profile-permissions', function(hooks) {
     });
     this.server.create('ilmSession', {
       session,
-      instructors: [user]
+      instructors: [user],
     });
     const userModel = await this.owner.lookup('service:store').find('user', user.id);
     this.set('user', userModel);
@@ -246,7 +247,7 @@ module('Integration | Component | user-profile-permissions', function(hooks) {
     });
     this.server.create('ilmSession', {
       session,
-      instructors: [user]
+      instructors: [user],
     });
     const userModel = await this.owner.lookup('service:store').find('user', user.id);
     this.set('user', userModel);

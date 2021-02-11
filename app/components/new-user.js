@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import {all, filter} from 'rsvp';
-import {dropTask, restartableTask} from 'ember-concurrency-decorators';
-import moment from "moment";
+import { all, filter } from 'rsvp';
+import { dropTask, restartableTask } from 'ember-concurrency-decorators';
+import moment from 'moment';
 import { validatable, IsEmail, Length, NotBlank } from 'ilios-common/decorators/validation';
 
 @validatable
@@ -42,7 +42,7 @@ export default class NewUserComponent extends Component {
   }
 
   get bestSelectedCohort() {
-    if (! this.currentSchoolCohorts) {
+    if (!this.currentSchoolCohorts) {
       return null;
     }
 
@@ -58,7 +58,7 @@ export default class NewUserComponent extends Component {
   }
 
   @restartableTask
-  *load(){
+  *load() {
     const user = yield this.currentUser.model;
     this.primarySchool = yield user.school;
     this.schools = yield this.loadSchools.perform();
@@ -77,41 +77,43 @@ export default class NewUserComponent extends Component {
     const store = this.store;
     // schools have been pre-fetched in the controller, so we can just access them synchronously from the store.
     const schools = store.peekAll('school');
-    return (yield filter(schools.toArray(), async school => {
+    return yield filter(schools.toArray(), async (school) => {
       return this.permissionChecker.canCreateUser(school);
-    }));
+    });
   }
 
   @restartableTask
   *loadCohorts(school) {
-    if (! school) {
+    if (!school) {
       return;
     }
     const cohorts = yield this.store.query('cohort', {
       filters: {
-        schools: [ school.id ],
-      }
+        schools: [school.id],
+      },
     });
 
     //prefetch programYears and programs so that ember data will coalesce these requests.
     const programYears = yield all(cohorts.getEach('programYear'));
     yield all(programYears.getEach('program'));
 
-    const objects = yield all(cohorts.toArray().map(async cohort => {
-      const obj = {
-        id: cohort.get('id')
-      };
-      const programYear = await cohort.programYear;
-      const program = await programYear.program;
-      obj.title = program.title + ' ' + cohort.title;
-      obj.startYear = programYear.startYear;
-      obj.duration = program.duration;
+    const objects = yield all(
+      cohorts.toArray().map(async (cohort) => {
+        const obj = {
+          id: cohort.get('id'),
+        };
+        const programYear = await cohort.programYear;
+        const program = await programYear.program;
+        obj.title = program.title + ' ' + cohort.title;
+        obj.startYear = programYear.startYear;
+        obj.duration = program.duration;
 
-      return obj;
-    }));
+        return obj;
+      })
+    );
 
     const lastYear = parseInt(moment().subtract(1, 'year').format('YYYY'), 10);
-    return objects.filter(obj => {
+    return objects.filter((obj) => {
       const finalYear = parseInt(obj.startYear, 10) + parseInt(obj.duration, 10);
       return finalYear > lastYear;
     });
@@ -119,9 +121,19 @@ export default class NewUserComponent extends Component {
 
   @dropTask
   *save() {
-    this.addErrorDisplaysFor(['firstName', 'middleName', 'lastName', 'campusId', 'otherId', 'email', 'phone', 'username', 'password']);
+    this.addErrorDisplaysFor([
+      'firstName',
+      'middleName',
+      'lastName',
+      'campusId',
+      'otherId',
+      'email',
+      'phone',
+      'username',
+      'password',
+    ]);
     const isValid = yield this.isValid();
-    if (! isValid) {
+    if (!isValid) {
       return false;
     }
     const roles = yield this.store.findAll('user-role');
@@ -138,7 +150,7 @@ export default class NewUserComponent extends Component {
       enabled: true,
       root: false,
     });
-    if (! this.nonStudentMode) {
+    if (!this.nonStudentMode) {
       user.set('primaryCohort', primaryCohort);
       const studentRole = roles.findBy('title', 'Student');
       user.set('roles', [studentRole]);

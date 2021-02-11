@@ -8,13 +8,13 @@ export default class DashboardMyCoursesComponent extends Component {
   @tracked listOfCourses;
   @tracked canEditCourses;
 
-  constructor(){
+  constructor() {
     super(...arguments);
     this.setup.perform();
   }
 
   @restartableTask
-  * setup() {
+  *setup() {
     this.canEditCourses = this.currentUser.performsNonLearnerFunction;
     this.listOfCourses = yield this.currentUser.getActiveRelatedCoursesInThisYearAndLastYear();
   }

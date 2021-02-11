@@ -30,11 +30,11 @@ export default class DashboardMyreportsComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.currentUser.getModel().then(user => this.user = user);
+    this.currentUser.getModel().then((user) => (this.user = user));
   }
 
   @restartableTask
-  * load(element, [reports, selectedReport, selectedYear]) {
+  *load(element, [reports, selectedReport, selectedYear]) {
     if (!reports) {
       return;
     }
@@ -54,13 +54,13 @@ export default class DashboardMyreportsComponent extends Component {
     return map(reports, async (report) => {
       return {
         title: await buildReportTitle(report, this.store, this.intl),
-        report
+        report,
       };
     });
   }
 
   get showAcademicYearFilter() {
-    if(!this.args.selectedReport){
+    if (!this.args.selectedReport) {
       return false;
     }
     const { subject, prepositionalObject } = this.args.selectedReport;
@@ -94,7 +94,7 @@ export default class DashboardMyreportsComponent extends Component {
   }
 
   @dropTask
-  * downloadReport() {
+  *downloadReport() {
     const report = this.args.selectedReport;
     const title = this.selectedReportTitle;
     const year = this.args.selectedYear;

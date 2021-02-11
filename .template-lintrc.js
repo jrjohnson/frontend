@@ -7,5 +7,5 @@ module.exports = {
     'no-implicit-this': false,
     'no-action': false,
     'no-triple-curlies': false,
-  }
+  },
 };

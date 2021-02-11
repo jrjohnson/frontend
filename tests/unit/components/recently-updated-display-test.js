@@ -4,10 +4,10 @@ import 'ember-qunit';
 
 import moment from 'moment';
 
-module('Unit | Component | recently updated display', function(hooks) {
+module('Unit | Component | recently updated display', function (hooks) {
   setupTest(hooks);
 
-  test('`recentlyUpdated` computed property works', function(assert) {
+  test('`recentlyUpdated` computed property works', function (assert) {
     assert.expect(2);
     const lastModified = moment().subtract(5, 'day');
 
@@ -20,4 +20,3 @@ module('Unit | Component | recently updated display', function(hooks) {
     assert.notOk(component.get('recentlyUpdated'), 'last modified more than 5 days');
   });
 });
-

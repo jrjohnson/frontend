@@ -4,7 +4,7 @@ import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 
 export default Component.extend({
-  tagName: "",
+  tagName: '',
   lastModified: null,
 
   recentlyUpdated: computed('lastModified', {
@@ -18,6 +18,6 @@ export default Component.extend({
       const today = moment();
       const daysSinceLastUpdate = today.diff(lastModifiedDate, 'days');
       return daysSinceLastUpdate < 6 ? true : false;
-    }
-  }).readOnly()
+    },
+  }).readOnly(),
 });

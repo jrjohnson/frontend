@@ -4,14 +4,8 @@
 module.exports = {
   test_page: 'tests/index.html?hidepassed',
   disable_watching: true,
-  launch_in_ci: [
-    'Firefox',
-    'Chrome'
-  ],
-  launch_in_dev: [
-    'Firefox',
-    'Chrome'
-  ],
+  launch_in_ci: ['Firefox', 'Chrome'],
+  launch_in_dev: ['Firefox', 'Chrome'],
   browser_disconnect_timeout: 300,
   browser_start_timeout: 120,
   browser_args: {
@@ -28,10 +22,7 @@ module.exports = {
       ].filter(Boolean),
     },
     Firefox: {
-      ci: [
-        '--headless',
-        '--window-size=1440,900'
-      ].filter(Boolean)
-    }
-  }
+      ci: ['--headless', '--window-size=1440,900'].filter(Boolean),
+    },
+  },
 };

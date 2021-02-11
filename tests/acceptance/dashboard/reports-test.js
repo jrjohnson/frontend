@@ -1,30 +1,27 @@
 import { currentRouteName, currentURL } from '@ember/test-helpers';
-import {
-  module,
-  test,
-} from 'qunit';
+import { module, test } from 'qunit';
 import setupAuthentication from 'ilios/tests/helpers/setup-authentication';
 import page from 'ilios/tests/pages/dashboard';
 
 import { setupApplicationTest } from 'ember-qunit';
 import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
-module('Acceptance | Dashboard Reports', function(hooks) {
+module('Acceptance | Dashboard Reports', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
   hooks.beforeEach(async function () {
     const school = this.server.create('school');
-    const user = await setupAuthentication( { school } );
+    const user = await setupAuthentication({ school });
     const vocabulary = this.server.create('vocabulary', {
-      school
+      school,
     });
     const term = this.server.create('term', { vocabulary });
     this.server.create('academic-year', {
-      id: 2015
+      id: 2015,
     });
     this.server.create('academic-year', {
-      id: 2016
+      id: 2016,
     });
     const firstCourse = this.server.create('course', {
       school,
@@ -61,19 +58,19 @@ module('Acceptance | Dashboard Reports', function(hooks) {
     });
   });
 
-  test('visiting /dashboard', async function(assert) {
+  test('visiting /dashboard', async function (assert) {
     await page.visit();
     assert.equal(currentRouteName(), 'dashboard');
   });
 
-  test('shows reports', async function(assert) {
+  test('shows reports', async function (assert) {
     await page.visit();
     assert.equal(page.myReports.reports.length, 2);
     assert.equal(page.myReports.reports[0].title, 'All Sessions for term 0 in school 0');
     assert.equal(page.myReports.reports[1].title, 'my report 0');
   });
 
-  test('first report works', async function(assert) {
+  test('first report works', async function (assert) {
     await page.visit();
     assert.equal(page.myReports.reports.length, 2);
     await page.myReports.reports[1].select();
@@ -83,7 +80,7 @@ module('Acceptance | Dashboard Reports', function(hooks) {
     assert.equal(currentURL(), '/dashboard?report=1', 'report query param works');
   });
 
-  test('no year filter on reports with a course prepositional object', async function(assert) {
+  test('no year filter on reports with a course prepositional object', async function (assert) {
     await page.visit();
     assert.equal(page.myReports.reports.length, 2);
     await page.myReports.reports[1].select();
@@ -113,7 +110,11 @@ module('Acceptance | Dashboard Reports', function(hooks) {
     await page.myReports.selectedReport.chooseYear('2016');
     assert.equal(page.myReports.selectedReport.results.length, 1);
     assert.equal(page.myReports.selectedReport.results[0].text, '2016 - 2017 course 1 session 1');
-    assert.equal(currentURL(), '/dashboard?report=2&reportYear=2016', 'reportYear query param works');
+    assert.equal(
+      currentURL(),
+      '/dashboard?report=2&reportYear=2016',
+      'reportYear query param works'
+    );
   });
 
   test('create new report', async function (assert) {
@@ -181,7 +182,7 @@ module('Acceptance | Dashboard Reports', function(hooks) {
   test('get all courses associated with mesh term #3419', async function (assert) {
     this.server.create('mesh-descriptor', {
       id: 'D1234',
-      courseIds: [1, 2]
+      courseIds: [1, 2],
     });
     await page.visit();
     assert.equal(page.myReports.reports.length, 2);
@@ -202,14 +203,17 @@ module('Acceptance | Dashboard Reports', function(hooks) {
 
     assert.equal(page.myReports.selectedReport.title, 'All Courses for descriptor 0 in school 0');
     assert.equal(page.myReports.selectedReport.results.length, 2);
-    assert.equal(page.myReports.selectedReport.results[0].text, '2015 - 2016 course 0 (Theoretical Phys Ed)');
+    assert.equal(
+      page.myReports.selectedReport.results[0].text,
+      '2015 - 2016 course 0 (Theoretical Phys Ed)'
+    );
     assert.equal(page.myReports.selectedReport.results[1].text, '2016 - 2017 course 1');
   });
 
   test('Prepositional object resets when a new type is selected', async function (assert) {
     this.server.create('course', {
       year: '2016',
-      schoolId: 1
+      schoolId: 1,
     });
     await page.visit();
     assert.equal(page.myReports.reports.length, 2);
@@ -230,7 +234,7 @@ module('Acceptance | Dashboard Reports', function(hooks) {
   test('Report Selector with Academic Year not selecting correct predicate #3427', async function (assert) {
     this.server.create('course', {
       year: '2016',
-      schoolId: 1
+      schoolId: 1,
     });
     await page.visit();
     assert.equal(page.myReports.reports.length, 2);
@@ -260,7 +264,10 @@ module('Acceptance | Dashboard Reports', function(hooks) {
 
     assert.equal(page.myReports.selectedReport.title, 'All Courses in All Schools');
     assert.equal(page.myReports.selectedReport.results.length, 2);
-    assert.equal(page.myReports.selectedReport.results[0].text, '2015 - 2016 course 0 (Theoretical Phys Ed)');
+    assert.equal(
+      page.myReports.selectedReport.results[0].text,
+      '2015 - 2016 course 0 (Theoretical Phys Ed)'
+    );
     assert.equal(page.myReports.selectedReport.results[1].text, '2016 - 2017 course 1');
   });
 });

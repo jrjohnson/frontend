@@ -9,20 +9,11 @@ import { task } from 'ember-concurrency';
 const Validations = buildValidations({
   currentSchool: validator('presence', true),
   selectedYear: validator('presence', true),
-  title: [
-    validator('presence', true),
-    validator('length', { min: 3, max: 200 })
-  ]
+  title: [validator('presence', true), validator('length', { min: 3, max: 200 })],
 });
 
 const THIS_YEAR = parseInt(moment().format('YYYY'), 10);
-const YEARS = [
-  THIS_YEAR-2,
-  THIS_YEAR-1,
-  THIS_YEAR,
-  THIS_YEAR+1,
-  THIS_YEAR+2
-];
+const YEARS = [THIS_YEAR - 2, THIS_YEAR - 1, THIS_YEAR, THIS_YEAR + 1, THIS_YEAR + 2];
 
 export default Component.extend(Validations, ValidationErrorDisplay, {
   intl: service(),
@@ -43,7 +34,7 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
   actions: {
     setYear(year) {
       this.set('selectedYear', parseInt(year, 10));
-    }
+    },
   },
 
   keyUp(event) {
@@ -72,9 +63,9 @@ export default Component.extend(Validations, ValidationErrorDisplay, {
         level: 1,
         title: this.title,
         school: this.currentSchool,
-        year: this.selectedYear
+        year: this.selectedYear,
       });
       this.save(course);
     }
-  })
+  }),
 });
