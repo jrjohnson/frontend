@@ -8,23 +8,23 @@ module('Acceptance | Course - Terms', function (hooks) {
   setupApplicationTest(hooks);
   hooks.beforeEach(async function () {
     this.user = await setupAuthentication({}, true);
-    this.school = this.server.create('school');
-    this.server.create('vocabulary', {
+    this.school = await this.server.create('school');
+    await this.server.create('vocabulary', {
       school: this.school,
       active: true,
     });
-    this.server.create('academic-year', { id: 2013 });
+    await this.server.create('academic-year', { id: 2013 });
 
-    this.server.create('term', {
+    await this.server.create('term', {
       vocabularyId: 1,
       active: true,
     });
-    this.server.create('term', {
+    await this.server.create('term', {
       vocabularyId: 1,
       active: true,
     });
 
-    this.course = this.server.create('course', {
+    this.course = await this.server.create('course', {
       year: 2013,
       school: this.school,
       termIds: [1],

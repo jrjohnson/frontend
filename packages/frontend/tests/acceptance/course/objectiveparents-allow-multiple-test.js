@@ -8,32 +8,32 @@ module('Acceptance | Course - Multiple Objective Parents', function (hooks) {
   setupApplicationTest(hooks);
   hooks.beforeEach(async function () {
     this.user = await setupAuthentication({}, true);
-    this.school = this.server.create('school');
-    this.server.create('schoolConfig', {
+    this.school = await this.server.create('school');
+    await this.server.create('schoolConfig', {
       school: this.school,
       name: 'allowMultipleCourseObjectiveParents',
       value: true,
     });
     this.user.update({ administeredSchools: [this.school] });
 
-    const program = this.server.create('program', { school: this.school });
-    const programYear = this.server.create('program-year', { program });
-    const cohort = this.server.create('cohort', { programYear });
-    const competency = this.server.create('competency', {
+    const program = await this.server.create('program', { school: this.school });
+    const programYear = await this.server.create('program-year', { program });
+    const cohort = await this.server.create('cohort', { programYear });
+    const competency = await this.server.create('competency', {
       school: this.school,
       programYears: [programYear],
     });
-    const programYearObjectives = this.server.createList('program-year-objective', 3, {
+    const programYearObjectives = await this.server.createList('program-year-objective', 3, {
       programYear,
       competency,
     });
 
-    this.course = this.server.create('course', {
+    this.course = await this.server.create('course', {
       school: this.school,
       cohorts: [cohort],
     });
 
-    this.server.create('course-objective', {
+    await this.server.create('course-objective', {
       programYearObjectives: [programYearObjectives[0], programYearObjectives[1]],
       course: this.course,
     });

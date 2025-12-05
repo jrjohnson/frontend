@@ -7,29 +7,29 @@ import page from 'ilios-common/page-objects/session';
 module('Acceptance | Session - Terms', function (hooks) {
   setupApplicationTest(hooks);
   hooks.beforeEach(async function () {
-    this.school = this.server.create('school');
+    this.school = await this.server.create('school');
     this.user = await setupAuthentication({ school: this.school }, true);
-    const vocabulary = this.server.create('vocabulary', {
+    const vocabulary = await this.server.create('vocabulary', {
       school: this.school,
       active: true,
     });
-    this.server.create('academic-year', { id: 2013 });
+    await this.server.create('academic-year', { id: 2013 });
 
-    const term1 = this.server.create('term', {
+    const term1 = await this.server.create('term', {
       vocabulary,
       active: true,
     });
-    this.server.create('term', {
+    await this.server.create('term', {
       vocabulary,
       active: true,
     });
 
-    const course = this.server.create('course', {
+    const course = await this.server.create('course', {
       year: 2013,
       school: this.school,
     });
-    const sessionType = this.server.create('session-type', { school: this.school });
-    this.server.create('session', {
+    const sessionType = await this.server.create('session-type', { school: this.school });
+    await this.server.create('session', {
       course,
       sessionType,
       terms: [term1],

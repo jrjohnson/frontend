@@ -8,12 +8,12 @@ module('Acceptance | Program - Overview', function (hooks) {
   setupApplicationTest(hooks);
 
   hooks.beforeEach(async function () {
-    this.school = this.server.create('school');
+    this.school = await this.server.create('school');
     this.user = await setupAuthentication({ school: this.school }, true);
   });
 
   test('non editable fields', async function (assert) {
-    this.server.create('program', {
+    await this.server.create('program', {
       school: this.school,
     });
     await page.visit({ programId: 1 });
@@ -25,7 +25,7 @@ module('Acceptance | Program - Overview', function (hooks) {
 
   test('editable fields', async function (assert) {
     this.user.update({ administeredSchools: [this.school] });
-    this.server.create('program', {
+    await this.server.create('program', {
       school: this.school,
     });
     await page.visit({ programId: 1 });
@@ -37,7 +37,7 @@ module('Acceptance | Program - Overview', function (hooks) {
 
   test('change title', async function (assert) {
     this.user.update({ administeredSchools: [this.school] });
-    this.server.create('program', {
+    await this.server.create('program', {
       school: this.school,
     });
     await page.visit({ programId: 1 });
@@ -55,7 +55,7 @@ module('Acceptance | Program - Overview', function (hooks) {
 
   test('change short title', async function (assert) {
     this.user.update({ administeredSchools: [this.school] });
-    this.server.create('program', {
+    await this.server.create('program', {
       school: this.school,
     });
     await page.visit({ programId: 1 });
@@ -73,7 +73,7 @@ module('Acceptance | Program - Overview', function (hooks) {
 
   test('change duration', async function (assert) {
     this.user.update({ administeredSchools: [this.school] });
-    this.server.create('program', {
+    await this.server.create('program', {
       school: this.school,
     });
     await page.visit({ programId: 1 });
@@ -91,7 +91,7 @@ module('Acceptance | Program - Overview', function (hooks) {
 
   test('leave duration at 1', async function (assert) {
     this.user.update({ administeredSchools: [this.school] });
-    this.server.create('program', {
+    await this.server.create('program', {
       school: this.school,
       duration: 1,
     });

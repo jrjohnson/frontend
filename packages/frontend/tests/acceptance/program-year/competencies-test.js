@@ -7,29 +7,29 @@ module('Acceptance | Program Year - Competencies', function (hooks) {
   setupApplicationTest(hooks);
 
   hooks.beforeEach(async function () {
-    this.school = this.server.create('school');
+    this.school = await this.server.create('school');
     this.user = await setupAuthentication({ school: this.school }, true);
-    this.server.create('program', {
+    await this.server.create('program', {
       school: this.school,
     });
-    this.server.create('program-year', {
+    await this.server.create('program-year', {
       programId: 1,
     });
-    this.server.create('cohort', {
+    await this.server.create('cohort', {
       programYearId: 1,
     });
-    this.server.create('competency', {
+    await this.server.create('competency', {
       school: this.school,
     });
-    this.server.createList('competency', 2, {
+    await this.server.createList('competency', 2, {
       parentId: 1,
       school: this.school,
       programYearIds: [1],
     });
-    this.server.create('competency', {
+    await this.server.create('competency', {
       school: this.school,
     });
-    this.server.createList('competency', 2, {
+    await this.server.createList('competency', 2, {
       school: this.school,
       parentId: 4,
     });

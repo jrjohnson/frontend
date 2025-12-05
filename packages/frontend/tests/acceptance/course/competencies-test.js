@@ -8,42 +8,42 @@ module('Acceptance | Course - Competencies', function (hooks) {
   setupApplicationTest(hooks);
   hooks.beforeEach(async function () {
     this.user = await setupAuthentication({}, true);
-    this.school = this.server.create('school');
-    const program = this.server.create('program', { school: this.school });
-    const programYear = this.server.create('program-year', {
+    this.school = await this.server.create('school');
+    const program = await this.server.create('program', { school: this.school });
+    const programYear = await this.server.create('program-year', {
       program,
     });
-    const cohort = this.server.create('cohort', {
+    const cohort = await this.server.create('cohort', {
       programYear,
     });
-    const competency1 = this.server.create('competency', {
+    const competency1 = await this.server.create('competency', {
       school: this.school,
       programYears: [programYear],
     });
-    const competency2 = this.server.create('competency', {
+    const competency2 = await this.server.create('competency', {
       school: this.school,
       programYears: [programYear],
     });
 
-    const programYearObjective = this.server.create('program-year-objective', {
+    const programYearObjective = await this.server.create('program-year-objective', {
       competency: competency1,
       programYear,
     });
-    this.server.create('program-year-objective', {
+    await this.server.create('program-year-objective', {
       competency: competency2,
       programYear,
     });
 
-    this.course = this.server.create('course', {
+    this.course = await this.server.create('course', {
       year: 2013,
       school: this.school,
       cohorts: [cohort],
     });
-    this.server.create('course-objective', {
+    await this.server.create('course-objective', {
       programYearObjectives: [programYearObjective],
       course: this.course,
     });
-    this.server.create('course-objective', {
+    await this.server.create('course-objective', {
       programYearObjectives: [programYearObjective],
       course: this.course,
     });

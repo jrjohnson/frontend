@@ -8,25 +8,25 @@ module('Acceptance | Course - Mesh Terms', function (hooks) {
   setupApplicationTest(hooks);
   hooks.beforeEach(async function () {
     this.user = await setupAuthentication({}, true);
-    this.school = this.server.create('school');
-    this.server.create('academic-year');
-    this.server.createList('meshTree', 3);
-    this.server.createList('meshConcept', 3);
+    this.school = await this.server.create('school');
+    await this.server.create('academic-year');
+    await this.server.createList('meshTree', 3);
+    await this.server.createList('meshConcept', 3);
 
-    this.server.create('meshConcept', {
+    await this.server.create('meshConcept', {
       scopeNote: '1234567890'.repeat(30),
     });
 
-    this.server.create('mesh-descriptor', {
+    await this.server.create('mesh-descriptor', {
       conceptIds: [1, 2, 3, 4],
       treeIds: [1, 2, 3],
     });
-    this.server.create('mesh-descriptor', {
+    await this.server.create('mesh-descriptor', {
       deleted: true,
     });
-    this.server.createList('mesh-descriptor', 4);
+    await this.server.createList('mesh-descriptor', 4);
 
-    this.course = this.server.create('course', {
+    this.course = await this.server.create('course', {
       year: 2014,
       school: this.school,
       meshDescriptorIds: [1, 2, 3],
