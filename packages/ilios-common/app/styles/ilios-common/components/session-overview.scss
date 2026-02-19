@@ -60,6 +60,33 @@
   .session-overview-content {
     padding-left: 0.5rem;
     @include m.ilios-overview-content;
+
+    .session-attributes {
+      grid-column: 1/-1;
+      display: grid;
+      grid-template-columns: 1fr;
+      margin: 0.25rem 0.5rem 0.25rem 0;
+
+      @include m.for-tablet-and-up {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @include m.for-laptop-and-up {
+        display: flex;
+      }
+
+      legend {
+        @include m.ilios-heading;
+        margin: 0 1rem;
+      }
+
+      label {
+        white-space: nowrap;
+        @include m.for-laptop-and-up {
+          margin-right: 1.5rem;
+        }
+      }
+    }
   }
 
   .block {
